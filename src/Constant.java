@@ -17,6 +17,7 @@ public class Constant {
     public static final int SPELL_DAMAGE_FACTOR = 10000;
     public static final double DETERIORATION_FACTOR = 0.9;
     public static final double DEFENCE_RATE = 0.2;
+    public static final int FIGHT_EXP = 2;
 
 
 

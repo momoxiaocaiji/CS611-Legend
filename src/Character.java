@@ -43,4 +43,8 @@ public abstract class Character implements Hurtable, Buyable{
             this.HP = 0;
         }
     }
+
+    public int getStatus() {
+        return status;
+    }
 }

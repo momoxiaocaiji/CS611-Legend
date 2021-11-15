@@ -13,7 +13,7 @@ public class CommonTile implements Tile{
         } else {
             // start a fight
             player.recordState();
-            FightSystem fightSystem = new FightSystem(player);
+            FightSystem fightSystem = new TurnBasedFightSystem(player);
             System.out.println("start a fight");
             System.out.println("----------------------------------");
             fightSystem.startAFight();
