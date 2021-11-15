@@ -10,6 +10,7 @@ public class InaccessibleTile implements Tile{
     }
 
     public String toString() {
-        return Constant.BLACK_BACKGROUND + "[X]" + Constant.RESET;
+//        return Constant.BLACK_BACKGROUND + "I - I - I " + Constant.RESET;
+        return "I - I - I  ";
     }
 }

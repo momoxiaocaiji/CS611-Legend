@@ -1,8 +1,8 @@
 import java.util.Random;
 
-public class CommonTile implements Tile{
+public class PlainTile implements Tile{
 
-    public CommonTile(){}
+    public PlainTile(){}
 
     @Override
     public boolean trigger(MAHGamePlayer player){
@@ -22,6 +22,6 @@ public class CommonTile implements Tile{
     }
 
     public String toString() {
-        return "[ ]";
+        return "P - P - P  ";
     }
 }
