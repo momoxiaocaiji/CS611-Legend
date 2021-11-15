@@ -1,7 +1,7 @@
 import java.util.*;
 
 
-public class Hero extends Character{
+public class Hero extends Character implements Teleport {
     // mana
     protected int MP;
     protected int money;
@@ -11,6 +11,7 @@ public class Hero extends Character{
     // equipment
     protected Equipment equipment;
 
+    protected int exploredTile;//the highest row hero has visited
 
     protected int damage;
     protected int weaponDamage;
@@ -52,7 +53,7 @@ public class Hero extends Character{
         equipment = new Equipment();
         learnedSpell = new ArrayList<>();
         // add three main skill
-
+        exploredTile = 0;
         //influence weapon damage
         skills.put("strength", 0);
 
@@ -248,6 +249,14 @@ public class Hero extends Character{
         }
     }
 
+    public void setExploredTile(int exploredTile) {
+        this.exploredTile = exploredTile;
+    }
+
+    public int getExploredTile() {
+        return exploredTile;
+    }
+
     public Equipment getEquipment(){
         return equipment;
     }
@@ -386,5 +395,16 @@ public class Hero extends Character{
                 ", def=" + def + Constant.YELLOW_BRIGHT + "(+" + armorDef +")" + Constant.RESET +
                 ", dodge=" + dodge + "%" +
                 '}';
+    }
+
+    @Override
+    public boolean tp(Position heroPosition,int row, int col) {
+        if(this.exploredTile>row){
+            return false;
+        }else{
+            heroPosition.setxPos(row);
+            heroPosition.setxPos(col);
+            return true;
+        }
     }
 }

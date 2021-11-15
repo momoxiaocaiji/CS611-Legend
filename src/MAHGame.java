@@ -176,7 +176,9 @@ public class MAHGame extends RPGame{
                 "D/d: move right\n" +
                 "Q/q: quit game\n" +
                 "E/e: show inventory and change the equipment\n" +
-                "I/i: show information.\n");
+                "I/i: show information.\n"+
+                "T/t: teleport to somewhere you want.\n"+
+                "B/b: teleport back to Nexus.\n");
         String moveIndex = scanner.next();
 
         if("I".equalsIgnoreCase(moveIndex)) {
@@ -197,9 +199,11 @@ public class MAHGame extends RPGame{
         }else if ("W".equalsIgnoreCase(moveIndex)
                 ||"A".equalsIgnoreCase(moveIndex)
                 ||"S".equalsIgnoreCase(moveIndex)
-                ||"D".equalsIgnoreCase(moveIndex)){
+                ||"D".equalsIgnoreCase(moveIndex)
+                ||"T".equalsIgnoreCase(moveIndex)
+                ||"B".equalsIgnoreCase(moveIndex)){
             // make a valid move
-            while (!playMap.validMove(heroPosition, moveIndex)){
+            while (!playMap.validMove(heroPosition, moveIndex, hero)){
                 System.out.println("Can't move to this tile");
                 playMap.show();
                 System.out.println("Select the move:");
@@ -208,9 +212,15 @@ public class MAHGame extends RPGame{
                         "S/s: move down\n" +
                         "D/d: move right\n" +
                         "Q/q: quit game\n" +
-                        "I/i: show information.\n");
+                        "I/i: show information.\n"+
+                        "T/t: teleport to somewhere you want.\n"+
+                        "B/b: teleport back to Nexus.\n");
                 moveIndex = scanner.next();
             }
+            if(hero.exploredTile >= heroPosition.getxPos()){
+                hero.exploredTile=heroPosition.getxPos();
+            }//record the highest tile hero has explored
+
         } else {
             System.out.println("Not a valid move instruction!!");
         }

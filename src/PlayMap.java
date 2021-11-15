@@ -8,6 +8,10 @@ public class PlayMap {
     private Map<MAHGamePlayer, Position> playersPosition;
 
 
+    public int getWidth() {
+        return width;
+    }
+
     // for non-square map
     public PlayMap(int length, int width) {
         this.length = length;
@@ -17,11 +21,11 @@ public class PlayMap {
         playersPosition = new HashMap<>();
     }
 
-    public PlayMap(int size){
-        this(size,size);
+    public PlayMap(int size) {
+        this(size, size);
     }
 
-    public PlayMap(){
+    public PlayMap() {
         this(8);
     }
 
@@ -29,8 +33,8 @@ public class PlayMap {
         playGround[x][y] = tile;
     }
 
-    public void show(){
-        for(int l = 0; l< length; l++) {
+    public void show() {
+        for (int l = 0; l < length; l++) {
             for (int w = 0; w < width; w++) {
                 System.out.print(playGround[l][w]);
             }
@@ -38,16 +42,16 @@ public class PlayMap {
             //TODO:blank cell
             for (int w = 0; w < width; w++) {
                 System.out.print("| ");
-                if(playGround[l][w] instanceof InaccessibleTile){
+                if (playGround[l][w] instanceof InaccessibleTile) {
                     System.out.print("X X X |  ");
                     continue;
                 }
-                if (playGround[l][w].getHero() != null){
+                if (playGround[l][w].getHero() != null) {
                     System.out.print(Constant.BLUE + "H" + Constant.RESET);
                 } else {
                     System.out.print(" ");
                 }
-                if (playGround[l][w].getMonster() != null){
+                if (playGround[l][w].getMonster() != null) {
                     System.out.print(Constant.RED + "   M" + Constant.RESET);
                 } else {
                     System.out.print("    ");
@@ -63,42 +67,83 @@ public class PlayMap {
     }
 
     //
-    public Position giveValorInitPosition(Hero h, int index){
+    public Position giveValorInitPosition(Hero h, int index) {
         playGround[length - 1][(index - 1) * 3].setHero(h);
-        return new Position(length - 1 , (index - 1) * 3);
+        return new Position(length - 1, (index - 1) * 3);
     }
 
-    public void initMonsterPosition(Monster monster, int laneIndex){
+    public void initMonsterPosition(Monster monster, int laneIndex) {
         // random create the monster in the lane
         playGround[0][(laneIndex - 1) * 3 + new Random().nextInt(2)].setMonster(monster);
     }
 
-    public boolean validMove(Position heroPosition, String direction) {
-        switch (direction){
+    public boolean validMove(Position heroPosition, String direction, Hero hero) {
+        switch (direction) {
+            case "b":
+            case "B":
+                hero.tp(heroPosition, 0, heroPosition.getyPos());
+                return true;
+            case "t":
+            case "T":
+                int input;
+                int row;
+                int column;
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Where would you like to tp?");
+
+                System.out.println("input row:");
+                input = sc.nextInt();
+                while (true) {
+                    if (input >= 0 && input < this.length && input <hero.getExploredTile()) {
+                        row = input;
+                        break;
+                    } else {
+                        System.out.println("input row, the area is not able to arrive:");
+                        input = sc.nextInt();
+                    }
+                }
+
+                while (true) {
+                    if (input >= 0 && input < this.width) {
+                        column = input;
+                        break;
+                    } else {
+                        System.out.println("input row, the area is not able to arrive:");
+                        input = sc.nextInt();
+                    }
+                }
+
+                if(playGround[row][column]instanceof InaccessibleTile){
+                    return false;
+                }else{
+                    hero.tp(heroPosition,row,column);
+                    return true;
+                }
+
+
+
             case "w":
             case "W":
-                 if (heroPosition.getxPos() - 1 < 0
-                         || playGround[heroPosition.getxPos() - 1][heroPosition.getyPos()] instanceof InaccessibleTile)
-                 {
-                     return false;
-                 }
-                 else {
-                     // delete hero in current tile
-                     playGround[heroPosition.getxPos()-1][heroPosition.getyPos()].setHero(
-                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
-                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
-                     heroPosition.setxPos(heroPosition.getxPos()-1);
-                     //encounterEvent(player);
-                     return true;
-                 }
+                if (heroPosition.getxPos() - 1 < 0
+                        || playGround[heroPosition.getxPos() - 1][heroPosition.getyPos()] instanceof InaccessibleTile) {
+                    return false;
+                } else {
+                    // delete hero in current tile
+                    playGround[heroPosition.getxPos() - 1][heroPosition.getyPos()].setHero(
+                            playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
+                    playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
+                    heroPosition.setxPos(heroPosition.getxPos() - 1);
+                    //encounterEvent(player);
+
+
+                    return true;
+                }
             case "a":
             case "A":
                 if (heroPosition.getyPos() - 1 < 0
-                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() - 1] instanceof InaccessibleTile)
-                {
+                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() - 1] instanceof InaccessibleTile) {
                     return false;
-                }
-                else {
+                } else {
                     // delete hero in current tile
                     playGround[heroPosition.getxPos()][heroPosition.getyPos() - 1].setHero(
                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
@@ -110,11 +155,9 @@ public class PlayMap {
             case "d":
             case "D":
                 if (heroPosition.getyPos() + 1 == length
-                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() + 1] instanceof InaccessibleTile)
-                {
+                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() + 1] instanceof InaccessibleTile) {
                     return false;
-                }
-                else {
+                } else {
                     // delete hero in current tile
                     playGround[heroPosition.getxPos()][heroPosition.getyPos() + 1].setHero(
                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
@@ -126,11 +169,9 @@ public class PlayMap {
             case "s":
             case "S":
                 if (heroPosition.getxPos() + 1 == width
-                        || playGround[heroPosition.getxPos() + 1][heroPosition.getyPos()] instanceof InaccessibleTile)
-                {
+                        || playGround[heroPosition.getxPos() + 1][heroPosition.getyPos()] instanceof InaccessibleTile) {
                     return false;
-                }
-                else {
+                } else {
                     // delete hero in current tile
                     playGround[heroPosition.getxPos() + 1][heroPosition.getyPos()].setHero(
                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
