@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class PlayMap {
-    private Tile[][] playGround;
+    private ValorTile[][] playGround;
     private int length;
     private int width;
     private MainMarket mainMarket;
@@ -12,7 +12,7 @@ public class PlayMap {
     public PlayMap(int length, int width) {
         this.length = length;
         this.width = width;
-        playGround = new Tile[length][width];
+        playGround = new ValorTile[length][width];
         mainMarket = MainMarket.getSingleInstance();
         playersPosition = new HashMap<>();
     }
@@ -25,7 +25,7 @@ public class PlayMap {
         this(8);
     }
 
-    public void add(Tile tile, int x, int y) {
+    public void add(ValorTile tile, int x, int y) {
         playGround[x][y] = tile;
     }
 
@@ -38,10 +38,21 @@ public class PlayMap {
             //TODO:blank cell
             for (int w = 0; w < width; w++) {
                 System.out.print("| ");
-//                if(playersPosition.containsValue(new Position(l,w))) {
-//                    System.out.print(Constant.BACKGROUND_RED + playGround[l][w] + Constant.RESET);
-//                }
-                System.out.print("      |  ");
+                if(playGround[l][w] instanceof InaccessibleTile){
+                    System.out.print("X X X |  ");
+                    continue;
+                }
+                if (playGround[l][w].getHero() != null){
+                    System.out.print(Constant.BLUE + "H" + Constant.RESET);
+                } else {
+                    System.out.print(" ");
+                }
+                if (playGround[l][w].getMonster() != null){
+                    System.out.print(Constant.RED + "   M" + Constant.RESET);
+                } else {
+                    System.out.print("    ");
+                }
+                System.out.print(" |  ");
             }
             System.out.print("\n");
             for (int w = 0; w < width; w++) {
@@ -51,82 +62,81 @@ public class PlayMap {
         }
     }
 
-    public Position giveValidPosition(){
-        boolean valid = false;
-        Random random = new Random();
-        int xPos = 0;
-        int yPos = 0;
-
-        while (!valid){
-            xPos = random.nextInt(length - 2) + 1;
-            yPos = random.nextInt(width - 2) + 1;
-            if (playGround[xPos][yPos - 1] instanceof InaccessibleTile
-                    && playGround[xPos][yPos + 1] instanceof  InaccessibleTile
-                    && playGround[xPos+1][yPos] instanceof InaccessibleTile
-                    && playGround[xPos - 1][yPos] instanceof InaccessibleTile) {
-            } else {
-                if (playGround[xPos][yPos] instanceof InaccessibleTile) {
-                } else  {
-                    valid = true;
-                }
-            }
-        }
-
-        return new Position(xPos, yPos);
+    //
+    public Position giveValorInitPosition(Hero h, int index){
+        playGround[length - 1][(index - 1) * 3].setHero(h);
+        return new Position(length - 1 , (index - 1) * 3);
     }
 
-    public void setPlayersPosition(MAHGamePlayer player , Position playersPosition) {
-        this.playersPosition.put(player , playersPosition);
+    public void initMonsterPosition(Monster monster, int laneIndex){
+        // random create the monster in the lane
+        playGround[0][(laneIndex - 1) * 3 + new Random().nextInt(2)].setMonster(monster);
     }
 
-    public boolean validMove(MAHGamePlayer player , String direction) {
+    public boolean validMove(Position heroPosition, String direction) {
         switch (direction){
             case "w":
             case "W":
-                 if (playersPosition.get(player).getxPos() - 1 < 0
-                         || playGround[playersPosition.get(player).getxPos() - 1][playersPosition.get(player).getyPos()] instanceof InaccessibleTile)
+                 if (heroPosition.getxPos() - 1 < 0
+                         || playGround[heroPosition.getxPos() - 1][heroPosition.getyPos()] instanceof InaccessibleTile)
                  {
                      return false;
                  }
                  else {
-                     playersPosition.get(player).setxPos(playersPosition.get(player).getxPos()-1);
-                     encounterEvent(player);
+                     // delete hero in current tile
+                     playGround[heroPosition.getxPos()-1][heroPosition.getyPos()].setHero(
+                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
+                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
+                     heroPosition.setxPos(heroPosition.getxPos()-1);
+                     //encounterEvent(player);
                      return true;
                  }
             case "a":
             case "A":
-                if (playersPosition.get(player).getyPos() - 1 < 0
-                        || playGround[playersPosition.get(player).getxPos()][playersPosition.get(player).getyPos() - 1] instanceof InaccessibleTile)
+                if (heroPosition.getyPos() - 1 < 0
+                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() - 1] instanceof InaccessibleTile)
                 {
                     return false;
                 }
                 else {
-                    playersPosition.get(player).setyPos(playersPosition.get(player).getyPos() - 1);
-                    encounterEvent(player);
+                    // delete hero in current tile
+                    playGround[heroPosition.getxPos()][heroPosition.getyPos() - 1].setHero(
+                            playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
+                    playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
+                    heroPosition.setyPos(heroPosition.getyPos() - 1);
+                    //encounterEvent(player);
                     return true;
                 }
             case "d":
             case "D":
-                if (playersPosition.get(player).getyPos() + 1 == length
-                        || playGround[playersPosition.get(player).getxPos()][playersPosition.get(player).getyPos() + 1] instanceof InaccessibleTile)
+                if (heroPosition.getyPos() + 1 == length
+                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() + 1] instanceof InaccessibleTile)
                 {
                     return false;
                 }
                 else {
-                    playersPosition.get(player).setyPos(playersPosition.get(player).getyPos() + 1);
-                    encounterEvent(player);
+                    // delete hero in current tile
+                    playGround[heroPosition.getxPos()][heroPosition.getyPos() + 1].setHero(
+                            playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
+                    playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
+                    heroPosition.setyPos(heroPosition.getyPos() + 1);
+                    //encounterEvent(player);
                     return true;
                 }
             case "s":
             case "S":
-                if (playersPosition.get(player).getxPos() + 1 == width
-                        || playGround[playersPosition.get(player).getxPos() + 1][playersPosition.get(player).getyPos()] instanceof InaccessibleTile)
+                if (heroPosition.getxPos() + 1 == width
+                        || playGround[heroPosition.getxPos() + 1][heroPosition.getyPos()] instanceof InaccessibleTile)
                 {
                     return false;
                 }
                 else {
-                    playersPosition.get(player).setxPos(playersPosition.get(player).getxPos() + 1);
-                    encounterEvent(player);
+                    // delete hero in current tile
+                    playGround[heroPosition.getxPos() + 1][heroPosition.getyPos()].setHero(
+                            playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
+                    playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
+                    heroPosition.setxPos(heroPosition.getxPos() + 1);
+                    //encounterEvent(player);
                     return true;
                 }
             default:

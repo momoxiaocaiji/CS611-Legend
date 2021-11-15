@@ -1,6 +1,6 @@
-public class BushTile implements Tile{
+public class BushTile extends ValorTile implements Tile{
     public BushTile() {}
-    public boolean trigger(MAHGamePlayer player) {
+    public boolean trigger(Hero hero) {
         //TODO: write Bush cell feature
         return false;
     }

@@ -1,19 +1,19 @@
 import java.util.Random;
 
-public class PlainTile implements Tile{
+public class PlainTile extends ValorTile implements Tile{
 
     public PlainTile(){}
 
     @Override
-    public boolean trigger(MAHGamePlayer player){
+    public boolean trigger(Hero hero){
         Random random = new Random();
         // means the hero will meet a fight with 70%
         if(random.nextInt(10) < 3) {
             System.out.println("Oh! Nothing happened!");
         } else {
             // start a fight
-            player.recordState();
-            FightSystem fightSystem = new TurnBasedFightSystem(player);
+            hero.recordState();
+            FightSystem fightSystem = new ParticipateBasedFightSystem(hero, new Monster(), true);
             System.out.println("start a fight");
             System.out.println("----------------------------------");
             fightSystem.startAFight();

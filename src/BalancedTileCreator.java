@@ -1,7 +1,6 @@
 import java.util.Random;
 
-//public class BalancedTileCreator implements TileCreator{
-public class BalancedTileCreator{
+public class BalancedTileCreator implements TileCreator{
     private int numOfITile;
     private int numOfMTile;
     private int numOfCTile;

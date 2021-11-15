@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class NexusTile implements Tile{
+public class NexusTile extends ValorTile implements Tile{
 
     protected MainMarket market;
     protected Scanner scanner = MainScanner.getSingleInstance().getScanner();
@@ -10,29 +10,26 @@ public class NexusTile implements Tile{
     }
 
     @Override
-    public boolean trigger(MAHGamePlayer player) {
+    public boolean trigger(Hero hero) {
         // enter the Market
-        for (Hero h: player.getTeam()){
-            System.out.println("Welcome! Hero " + h.getName());
-            market.setGuest(h);
+        System.out.println("Welcome! Hero " + hero.getName());
+        market.setGuest(hero);
 
-            while (true){
-                System.out.println("Do you want to buy something or sale something?");
-                System.out.println("1. Buy");
-                System.out.println("2. Sale");
-                System.out.println("3. Exit");
-                int index = scanner.nextInt();
-                if (index == 1){
-                    market.showTheList();
-                } else if(index == 2){
-                    h.checkInventoryAndSale();
-                } else if(index == 3){
-                    System.out.println("Hero " + h.getName() + " exits the market!");
-                    market.setGuest(null);
-                    break;
-                }
+        while (true){
+            System.out.println("Do you want to buy something or sale something?");
+            System.out.println("1. Buy");
+            System.out.println("2. Sale");
+            System.out.println("3. Exit");
+            int index = scanner.nextInt();
+            if (index == 1){
+                market.showTheList();
+            } else if(index == 2){
+                hero.checkInventoryAndSale();
+            } else if(index == 3){
+                System.out.println("Hero " + hero.getName() + " exits the market!");
+                market.setGuest(null);
+                break;
             }
-
         }
         return true;
     }

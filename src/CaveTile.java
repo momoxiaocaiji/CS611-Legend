@@ -1,7 +1,7 @@
-public class CaveTile implements Tile{
+public class CaveTile extends ValorTile implements Tile{
     public CaveTile() {}
 
-    public boolean trigger(MAHGamePlayer player) {
+    public boolean trigger(Hero hero) {
         //TODO: write Cave cell
         return false;
     }

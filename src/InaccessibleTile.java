@@ -1,9 +1,9 @@
-public class InaccessibleTile implements Tile{
+public class InaccessibleTile extends ValorTile implements Tile{
 
     public InaccessibleTile(){}
 
     @Override
-    public boolean trigger(MAHGamePlayer player) {
+    public boolean trigger(Hero hero) {
         System.out.println("You cannot access here!!");
 
         return false;

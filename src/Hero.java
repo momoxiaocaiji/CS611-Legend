@@ -127,6 +127,12 @@ public class Hero extends Character{
             }
         }
         System.out.println("-------------------------------------------");
+        System.out.println("C/c: go back to the main menu");
+        String out = scanner.next();
+        while (!out.equalsIgnoreCase("c")){
+            System.out.println("Invalid input");
+            out = scanner.next();
+        }
     }
 
     public void acquireExp(int exp) {

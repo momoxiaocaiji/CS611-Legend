@@ -1,7 +1,7 @@
-public class KoulouTile implements Tile{
+public class KoulouTile extends ValorTile implements Tile{
     public KoulouTile() {}
 
-    public boolean trigger(MAHGamePlayer player) {
+    public boolean trigger(Hero hero) {
         //TODO: write Koulou cell
         return false;
     }
