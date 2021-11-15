@@ -1,11 +1,11 @@
 import java.util.Scanner;
 
-public class MarketTile implements Tile{
+public class NexusTile implements Tile{
 
     protected MainMarket market;
     protected Scanner scanner = MainScanner.getSingleInstance().getScanner();
 
-    public MarketTile() {
+    public NexusTile() {
         market = MainMarket.getSingleInstance();
     }
 
@@ -38,6 +38,6 @@ public class MarketTile implements Tile{
     }
 
     public String toString() {
-        return "[M]";
+        return "N - N - N  ";
     }
 }

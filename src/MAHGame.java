@@ -17,7 +17,8 @@ public class MAHGame extends RPGame{
         scanner = MainScanner.getSingleInstance().getScanner();
         players = new ArrayList<>();
         players.add(new MAHGamePlayer());
-        playMap = createMap(new BalancedTileCreator(size*size));
+//        playMap = createMap(new BalancedTileCreator(size*size));
+        playMap = createMap(new ValorTileCreator(size*size));
     }
 
     @Override
@@ -31,11 +32,21 @@ public class MAHGame extends RPGame{
     }
 
     private PlayMap createMap(TileCreator tileCreator) {
-        //TODO
         PlayMap playMap = new PlayMap(size);
 
-        for (int i = 0; i< size * size; i++){
-            playMap.add(tileCreator.createTile(), i / size , i % size);
+//        for (int i = 0; i< size * size; i++){
+//            playMap.add(tileCreator.createTile(), i / size , i % size);
+//        }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if ((i == 0 || i == (size -1)) && (j != 2 && j != 5)) {
+                    playMap.add(tileCreator.createNexusTile(), i , j);
+                }else if (j == 2 || j == 5) {
+                    playMap.add(tileCreator.createInaccessibleTile(), i , j);
+                }else {
+                    playMap.add(tileCreator.createTile(), i , j);
+                }
+            }
         }
 
         return playMap;

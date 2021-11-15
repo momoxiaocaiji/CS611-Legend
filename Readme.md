@@ -20,7 +20,7 @@ coding my project on Windows
 4. Castable - the interface indicates a spell can be cast.
 5. Character - the abstract class for Character in the game, such as hero and monster
 6. CirculateList - give the next Character who supposed to move during the fight.
-7. CommonTile - the common tile in the map, which might trigger a fight
+7. PlainTile - the common tile in the map, which might trigger a fight
 8. Constant - maintain some final factor of this game
 9. Equipment - keep the information of the hero's equipments
 10. FightSystem - when it starts a fight, the heroes and monsters will enter this system to fight
@@ -36,10 +36,10 @@ coding my project on Windows
 20. MAHGame - the main class to create a MAHGame and start it.
 21. MAHGamePlayer - the player of the MAHGame
 22. Main - the class for running
-23. MainMarket - the only market of the game, every MarketTile will visit this market
+23. MainMarket - the only market of the game, every NexusTile will visit this market
 24. MainScanner - the only scanner of the game, every input will invoke this scanner
 25. Market - the interface Market for extension
-26. MarketTile - the market tile in the map, which will trigger the market
+26. NexusTile - the market tile in the map, which will trigger the market
 27. Monster - class as the Monster object
 28. MonsterCreator - interface of the Creator of Factory Pattern .
 29. Paladin - class as the Paladin object
@@ -88,7 +88,7 @@ coding my project on Windows
    3. spell cannot avoid and defence.
    4. the monster will attack the hero moved last (maybe they hate the hero who caused the damage)
    5. you can equip the armor on the body, and two single-handy weapons for two hands
-   6. MarketTile has the letter 'M' in the Tile
+   6. NexusTile has the letter 'M' in the Tile
    7. When the player check the inventory or enter the market, the hero will do the action one by one.
    8. You will enter the market automatically when you step in the Market Tile, and you can't enter it again if you exit 
    the market.
