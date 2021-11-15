@@ -210,6 +210,7 @@ public class MAHGame extends RPGame{
             // make a valid move
             while (!playMap.validMove(heroPosition, moveIndex, hero)){
                 System.out.println("Can't move to this tile");
+                System.out.println(Constant.DIVIDE);
                 playMap.show(currentHero);
                 System.out.println("Select the move:");
                 System.out.print("W/w: move up\n" +

@@ -143,7 +143,8 @@ public class PlayMap {
             case "w":
             case "W":
                 if (heroPosition.getxPos() - 1 < 0
-                        || playGround[heroPosition.getxPos() - 1][heroPosition.getyPos()] instanceof InaccessibleTile) {
+                        || playGround[heroPosition.getxPos() - 1][heroPosition.getyPos()] instanceof InaccessibleTile
+                        || playGround[heroPosition.getxPos() - 1][heroPosition.getyPos()].getHero() != null) {
                     return false;
                 } else {
                     // delete hero in current tile
@@ -159,7 +160,8 @@ public class PlayMap {
             case "a":
             case "A":
                 if (heroPosition.getyPos() - 1 < 0
-                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() - 1] instanceof InaccessibleTile) {
+                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() - 1] instanceof InaccessibleTile
+                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() - 1].getHero() != null) {
                     return false;
                 } else {
                     // delete hero in current tile
@@ -173,7 +175,8 @@ public class PlayMap {
             case "d":
             case "D":
                 if (heroPosition.getyPos() + 1 == length
-                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() + 1] instanceof InaccessibleTile) {
+                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() + 1] instanceof InaccessibleTile
+                        || playGround[heroPosition.getxPos()][heroPosition.getyPos() + 1].getHero() != null) {
                     return false;
                 } else {
                     // delete hero in current tile
@@ -187,7 +190,8 @@ public class PlayMap {
             case "s":
             case "S":
                 if (heroPosition.getxPos() + 1 == width
-                        || playGround[heroPosition.getxPos() + 1][heroPosition.getyPos()] instanceof InaccessibleTile) {
+                        || playGround[heroPosition.getxPos() + 1][heroPosition.getyPos()] instanceof InaccessibleTile
+                        || playGround[heroPosition.getxPos() + 1][heroPosition.getyPos()].getHero() != null) {
                     return false;
                 } else {
                     // delete hero in current tile
