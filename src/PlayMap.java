@@ -6,6 +6,7 @@ public class PlayMap {
     private int width;
     private MainMarket mainMarket;
     private Map<MAHGamePlayer, Position> playersPosition;
+    private Scanner scanner = MainScanner.getSingleInstance().getScanner();
 
 
     public int getWidth() {
@@ -33,7 +34,7 @@ public class PlayMap {
         playGround[x][y] = tile;
     }
 
-    public void show() {
+    public void show(Hero currentHero) {
         for (int l = 0; l < length; l++) {
             for (int w = 0; w < width; w++) {
                 System.out.print(playGround[l][w]);
@@ -47,7 +48,11 @@ public class PlayMap {
                     continue;
                 }
                 if (playGround[l][w].getHero() != null) {
-                    System.out.print(Constant.BLUE + "H" + Constant.RESET);
+                    if (playGround[l][w].getHero().equals(currentHero)){
+                        System.out.print(Constant.YELLOW_BRIGHT + "H" + Constant.RESET);
+                    } else {
+                        System.out.print(Constant.BLUE + "H" + Constant.RESET);
+                    }
                 } else {
                     System.out.print(" ");
                 }
@@ -68,6 +73,7 @@ public class PlayMap {
 
     //
     public Position giveValorInitPosition(Hero h, int index) {
+        h.setExploredTile(length - 1);
         playGround[length - 1][(index - 1) * 3].setHero(h);
         return new Position(length - 1, (index - 1) * 3);
     }
@@ -81,47 +87,59 @@ public class PlayMap {
         switch (direction) {
             case "b":
             case "B":
-                hero.tp(heroPosition, 0, heroPosition.getyPos());
+                if (playGround[length - 1][heroPosition.getyPos()].getHero() != null){
+                    System.out.println("There already has a hero");
+                    return false;
+                }
+                playGround[length - 1][heroPosition.getyPos()].setHero(
+                        playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
+                playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
+                hero.tp(heroPosition, length - 1, heroPosition.getyPos());
                 return true;
             case "t":
             case "T":
                 int input;
                 int row;
                 int column;
-                Scanner sc = new Scanner(System.in);
                 System.out.println("Where would you like to tp?");
 
                 System.out.println("input row:");
-                input = sc.nextInt();
+                input = scanner.nextInt();
                 while (true) {
-                    if (input >= 0 && input < this.length && input <hero.getExploredTile()) {
-                        row = input;
+                    if (input >= 1 && input <= this.length && input <= width - hero.getExploredTile()) {
+                        // player will see the inverse index of row
+                        row = width - input;
                         break;
                     } else {
                         System.out.println("input row, the area is not able to arrive:");
-                        input = sc.nextInt();
+                        input = scanner.nextInt();
                     }
                 }
 
+                System.out.println("input column:");
+                input = scanner.nextInt();
                 while (true) {
-                    if (input >= 0 && input < this.width) {
-                        column = input;
+                    if (input >= 1 && input <= this.width && Math.abs(input - 1 - heroPosition.getyPos()) > 1) {
+                        column = input - 1;
                         break;
                     } else {
-                        System.out.println("input row, the area is not able to arrive:");
-                        input = sc.nextInt();
+                        System.out.println("input column, the area is not able to arrive:");
+                        input = scanner.nextInt();
                     }
                 }
 
-                if(playGround[row][column]instanceof InaccessibleTile){
+                if(playGround[row][column] instanceof InaccessibleTile){
+                    return false;
+                } else if (playGround[row][column].getHero() != null){
+                    System.out.println("There already has a hero");
                     return false;
                 }else{
+                    playGround[row][column].setHero(
+                            playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
+                    playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                     hero.tp(heroPosition,row,column);
                     return true;
                 }
-
-
-
             case "w":
             case "W":
                 if (heroPosition.getxPos() - 1 < 0

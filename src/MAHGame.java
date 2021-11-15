@@ -12,6 +12,8 @@ public class MAHGame extends RPGame{
     private static List<Warrior> warriors;
     private static List<Sorcerer> sorcerers;
     private static List<Paladin> paladins;
+    private static Hero currentHero;
+    private static Monster currentMonster;
 
     public MAHGame() {
         size = 8;
@@ -64,16 +66,19 @@ public class MAHGame extends RPGame{
         //init the monster
         initMonster(players.get(0).getTheHighestLevel());
 
-        playMap.show();
 
         isNotEnd = true;
         // start game
         while(isNotEnd) {
             for (MAHGamePlayer p : players){
                 for (Hero hero : p.getTeam().keySet()){
+                    currentHero = hero;
+                    playMap.show(currentHero);
                     System.out.println(Constant.DIVIDE);
                     System.out.println("Hero " + hero.getName());
                     move(hero, p.getTeam().get(hero));
+                    // finish move
+                    currentHero = null;
                 }
             }
         }
@@ -205,7 +210,7 @@ public class MAHGame extends RPGame{
             // make a valid move
             while (!playMap.validMove(heroPosition, moveIndex, hero)){
                 System.out.println("Can't move to this tile");
-                playMap.show();
+                playMap.show(currentHero);
                 System.out.println("Select the move:");
                 System.out.print("W/w: move up\n" +
                         "A/a: move left\n" +
@@ -225,7 +230,6 @@ public class MAHGame extends RPGame{
             System.out.println("Not a valid move instruction!!");
         }
         System.out.println(Constant.DIVIDE);
-        playMap.show();
 
     }
 

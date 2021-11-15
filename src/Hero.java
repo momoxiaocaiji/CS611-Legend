@@ -53,7 +53,6 @@ public class Hero extends Character implements Teleport {
         equipment = new Equipment();
         learnedSpell = new ArrayList<>();
         // add three main skill
-        exploredTile = 0;
         //influence weapon damage
         skills.put("strength", 0);
 
@@ -403,7 +402,7 @@ public class Hero extends Character implements Teleport {
             return false;
         }else{
             heroPosition.setxPos(row);
-            heroPosition.setxPos(col);
+            heroPosition.setyPos(col);
             return true;
         }
     }
