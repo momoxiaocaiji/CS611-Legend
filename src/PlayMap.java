@@ -32,13 +32,22 @@ public class PlayMap {
     public void show(){
         for(int l = 0; l< length; l++) {
             for (int w = 0; w < width; w++) {
-                if(playersPosition.containsValue(new Position(l,w))) {
-                    System.out.print(Constant.BACKGROUND_RED + playGround[l][w] + Constant.RESET);
-                } else {
-                    System.out.print(playGround[l][w]);
-                }
+                System.out.print(playGround[l][w]);
             }
             System.out.print("\n");
+            //TODO:blank cell
+            for (int w = 0; w < width; w++) {
+                System.out.print("| ");
+//                if(playersPosition.containsValue(new Position(l,w))) {
+//                    System.out.print(Constant.BACKGROUND_RED + playGround[l][w] + Constant.RESET);
+//                }
+                System.out.print("      |  ");
+            }
+            System.out.print("\n");
+            for (int w = 0; w < width; w++) {
+                System.out.print(playGround[l][w]);
+            }
+            System.out.print("\n\n");
         }
     }
 

@@ -1,6 +1,7 @@
 import java.util.Random;
 
-public class BalancedTileCreator implements TileCreator{
+//public class BalancedTileCreator implements TileCreator{
+public class BalancedTileCreator{
     private int numOfITile;
     private int numOfMTile;
     private int numOfCTile;
@@ -18,10 +19,10 @@ public class BalancedTileCreator implements TileCreator{
 
         if (temp < numOfCTile) {
             numOfCTile--;
-            return new CommonTile();
+            return new PlainTile();
         } else if (temp < numOfCTile + numOfMTile) {
             numOfMTile--;
-            return new MarketTile();
+            return new NexusTile();
         } else {
             numOfITile--;
             return new InaccessibleTile();
