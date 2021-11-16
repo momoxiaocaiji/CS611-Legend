@@ -1,8 +1,6 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
-public class MAHGame extends RPGame{
+public class MAHGame extends RPGame {
     private List<MAHGamePlayer> players;
     private List<Monster> monsters;
     private final int size;
@@ -14,6 +12,7 @@ public class MAHGame extends RPGame{
     private static List<Paladin> paladins;
     private static Hero currentHero;
     private static Monster currentMonster;
+    private static int turnCount = 8;
 
     public MAHGame() {
         size = 8;
@@ -22,7 +21,7 @@ public class MAHGame extends RPGame{
         players.add(new MAHGamePlayer());
 //        playMap = createMap(new BalancedTileCreator(size*size));
         monsters = new ArrayList<>();
-        playMap = createMap(new ValorTileCreator(size*size));
+        playMap = createMap(new ValorTileCreator(size * size));
     }
 
     @Override
@@ -43,12 +42,12 @@ public class MAHGame extends RPGame{
 //        }
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if ((i == 0 || i == (size -1)) && (j != 2 && j != 5)) {
-                    playMap.add((ValorTile) tileCreator.createNexusTile(), i , j);
-                }else if (j == 2 || j == 5) {
-                    playMap.add((ValorTile) tileCreator.createInaccessibleTile(), i , j);
-                }else {
-                    playMap.add((ValorTile) tileCreator.createTile(), i , j);
+                if ((i == 0 || i == (size - 1)) && (j != 2 && j != 5)) {
+                    playMap.add((ValorTile) tileCreator.createNexusTile(), i, j);
+                } else if (j == 2 || j == 5) {
+                    playMap.add((ValorTile) tileCreator.createInaccessibleTile(), i, j);
+                } else {
+                    playMap.add((ValorTile) tileCreator.createTile(), i, j);
                 }
             }
         }
@@ -69,18 +68,34 @@ public class MAHGame extends RPGame{
 
         isNotEnd = true;
         // start game
-        while(isNotEnd) {
-            for (MAHGamePlayer p : players){
-                for (Hero hero : p.getTeam().keySet()){
+        while (isNotEnd) {
+
+            // after 8 rounds, init 3 monster
+            if (turnCount == 0) {
+                initMonster(players.get(0).getTheHighestLevel());
+                turnCount = 8;
+            }
+
+            // player's turn
+            for (MAHGamePlayer p : players) {
+                for (Hero hero : p.getTeam()) {
                     currentHero = hero;
                     playMap.show(currentHero);
                     System.out.println(Constant.DIVIDE);
                     System.out.println("Hero " + hero.getName());
-                    move(hero, p.getTeam().get(hero));
+                    move(hero);
                     // finish move
                     currentHero = null;
                 }
             }
+
+            // monster's turn
+            for (Monster monster : monsters) {
+                // looking for battle
+                monsterMove(monster);
+            }
+
+            turnCount--;
         }
     }
 
@@ -105,63 +120,56 @@ public class MAHGame extends RPGame{
     }
 
     private void initMonster(int levelLimit) {
+        // clean the dead monster
+        monsters.removeIf(m -> m.getStatus() == Constant.DEAD);
         // init add 3 monsters
-        Monster m1 = new RandomMonsterCreator().createMonster(levelLimit);
-        monsters.add(m1);
-        // for line one
-        playMap.initMonsterPosition(m1 , 1);
-
-        Monster m2 = new RandomMonsterCreator().createMonster(levelLimit);
-        monsters.add(m2);
-        // for line two
-        playMap.initMonsterPosition(m2, 2);
-
-        Monster m3 = new RandomMonsterCreator().createMonster(levelLimit);
-        monsters.add(m3);
-        // for line three
-        playMap.initMonsterPosition(m3,3);
+        for (int i = 1; i <= Constant.INIT_HERO_NUM; i++) {
+            Monster m = new RandomMonsterCreator().createMonster(levelLimit);
+            monsters.add(m);
+            m.setPosition(playMap.initMonsterPosition(m, i));
+        }
     }
 
     private Hero chooseTheHero() {
         Hero re = null;
-        while (true){
+        while (true) {
             System.out.println("Which type of hero you'd like to choose:");
             System.out.println("1. Warrior");
             System.out.println("2. Sorcerer");
             System.out.println("3. Paladin");
             int type = MainScanner.getSingleInstance().validInput(3);
             System.out.println("Which one you want to choose:");
-            switch (type){
+            switch (type) {
                 case 1:
-                    if (warriors == null){
+                    if (warriors == null) {
                         // need to read the config
                         List<String> rawData = Parser.parse("Warrior");
                         warriors = Warrior.createWarriors(rawData);
                     }
                     re = displayAndChooseTheHero(warriors);
-                    if (re == null){
+                    if (re == null) {
                         continue;
                     }
                     return re;
                 case 2:
-                    if (sorcerers == null){
+                    if (sorcerers == null) {
                         // need to read the config
                         List<String> rawData = Parser.parse("Sorcerer");
                         sorcerers = Sorcerer.createSorcerer(rawData);
                     }
                     re = displayAndChooseTheHero(sorcerers);
-                    if (re == null){
+                    if (re == null) {
                         continue;
                     }
                     return re;
                 case 3:
-                    if (paladins == null){
+                    if (paladins == null) {
                         // need to read the config
                         List<String> rawData = Parser.parse("Paladin");
                         paladins = Paladin.createPaladin(rawData);
                     }
                     re = displayAndChooseTheHero(paladins);
-                    if (re == null){
+                    if (re == null) {
                         continue;
                     }
                     return re;
@@ -173,82 +181,84 @@ public class MAHGame extends RPGame{
 
     }
 
-    private void move(Hero hero, Position heroPosition) {
-        System.out.println("Select the move:");
-        System.out.print("W/w: move up\n" +
-                "A/a: move left\n" +
-                "S/s: move down\n" +
-                "D/d: move right\n" +
-                "Q/q: quit game\n" +
-                "E/e: show inventory and change the equipment\n" +
-                "I/i: show information.\n"+
-                "T/t: teleport to somewhere you want.\n"+
-                "B/b: teleport back to Nexus.\n");
-        String moveIndex = scanner.next();
+    private void move(Hero hero) {
+        while (true){
+            System.out.println("Select the move:");
+            System.out.print("W/w: move up\n" +
+                    "A/a: move left\n" +
+                    "S/s: move down\n" +
+                    "D/d: move right\n" +
+                    "Q/q: quit game\n" +
+                    "E/e: show inventory and change the equipment\n" +
+                    "I/i: show information.\n" +
+                    "F/f: fight with the neighbor monster.\n" +
+                    "T/t: teleport to somewhere you want.\n" +
+                    "B/b: teleport back to Nexus.\n");
+            String moveIndex = scanner.next();
 
-        if("I".equalsIgnoreCase(moveIndex)) {
-            // show the team info
-            hero.show();
-        } else if ("Q".equalsIgnoreCase(moveIndex)){
-            // quit the game
-            System.out.println("JZ quits the game! See you next time!");
-            isNotEnd = false;
-            return;
-        } else if ("E".equalsIgnoreCase(moveIndex)){
-            hero.checkEquipment();
-
-            hero.checkInventoryAndChangeEquipment();
-
-            // recalculate the ability after change your equipment
-            hero.recalDamageAndDef();
-        }else if ("W".equalsIgnoreCase(moveIndex)
-                ||"A".equalsIgnoreCase(moveIndex)
-                ||"S".equalsIgnoreCase(moveIndex)
-                ||"D".equalsIgnoreCase(moveIndex)
-                ||"T".equalsIgnoreCase(moveIndex)
-                ||"B".equalsIgnoreCase(moveIndex)){
-            // make a valid move
-            while (!playMap.validMove(heroPosition, moveIndex, hero)){
-                System.out.println("Can't move to this tile");
-                System.out.println(Constant.DIVIDE);
+            if ("I".equalsIgnoreCase(moveIndex)) {
+                // show the team info
+                hero.show();
                 playMap.show(currentHero);
-                System.out.println("Select the move:");
-                System.out.print("W/w: move up\n" +
-                        "A/a: move left\n" +
-                        "S/s: move down\n" +
-                        "D/d: move right\n" +
-                        "Q/q: quit game\n" +
-                        "I/i: show information.\n"+
-                        "T/t: teleport to somewhere you want.\n"+
-                        "B/b: teleport back to Nexus.\n");
-                moveIndex = scanner.next();
+            } else if ("Q".equalsIgnoreCase(moveIndex)) {
+                // quit the game
+                System.out.println("JZ quits the game! See you next time!");
+                isNotEnd = false;
+                return;
+            } else if ("E".equalsIgnoreCase(moveIndex)) {
+                hero.checkEquipment();
+
+                hero.checkInventoryAndChangeEquipment();
+
+                // recalculate the ability after change your equipment
+                hero.recalDamageAndDef();
+
+                break;
+            } else if ("F".equalsIgnoreCase(moveIndex)) {
+                if (playMap.triggerFight(hero)){
+                    break;
+                }
+            } else if ("W".equalsIgnoreCase(moveIndex)
+                    || "A".equalsIgnoreCase(moveIndex)
+                    || "S".equalsIgnoreCase(moveIndex)
+                    || "D".equalsIgnoreCase(moveIndex)
+                    || "T".equalsIgnoreCase(moveIndex)
+                    || "B".equalsIgnoreCase(moveIndex)) {
+                // make a valid move
+                if (!playMap.validMove(moveIndex, hero)) {
+                    System.out.println("Can't move to this tile");
+                    continue;
+                }
+                if (hero.exploredTile >= hero.getPosition().getxPos()) {
+                    hero.exploredTile = hero.getPosition().getxPos();
+                }//record the highest tile hero has explored
+                break;
+            } else {
+                System.out.println("Not a valid move instruction!!");
             }
-            if(hero.exploredTile >= heroPosition.getxPos()){
-                hero.exploredTile=heroPosition.getxPos();
-            }//record the highest tile hero has explored
-
-        } else {
-            System.out.println("Not a valid move instruction!!");
+            System.out.println(Constant.DIVIDE);
         }
-        System.out.println(Constant.DIVIDE);
-
     }
 
-    private Hero displayAndChooseTheHero(List<? extends Hero> list){
-        for(int i = 0; i < list.size(); i++){
-            if (list.get(i).isChosen()){
-                System.out.println(Constant.GREEN + (i+1) + ". " + list.get(i) + Constant.RESET);
+    private void monsterMove(Monster monster) {
+        playMap.monsterMove(monster);
+    }
+
+    private Hero displayAndChooseTheHero(List<? extends Hero> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).isChosen()) {
+                System.out.println(Constant.GREEN + (i + 1) + ". " + list.get(i) + Constant.RESET);
             } else {
-                System.out.println((i+1) + ". " + list.get(i));
+                System.out.println((i + 1) + ". " + list.get(i));
             }
         }
-        System.out.println((list.size()+1) + ". Go back to the previous menu" );
-        int index = MainScanner.getSingleInstance().validInput(list.size()+1);
-        if (index == list.size()+1){
+        System.out.println((list.size() + 1) + ". Go back to the previous menu");
+        int index = MainScanner.getSingleInstance().validInput(list.size() + 1);
+        if (index == list.size() + 1) {
             // go back
             return null;
         }
-        while (list.get(index - 1).isChosen()){
+        while (list.get(index - 1).isChosen()) {
             System.out.println("Hero " + list.get(index - 1).getName() + "is already in your team!");
             index = MainScanner.getSingleInstance().validInput(list.size());
         }

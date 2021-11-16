@@ -29,7 +29,7 @@ public class ParticipateBasedFightSystem implements FightSystem{
             // monster action
             Random random = new Random();
             System.out.println("Monster " + monster + " !");
-            System.out.println(monster + " uses Formal Attack");
+            System.out.println(monster.getName() + " uses Formal Attack");
             if (random.nextDouble() * 100 <= hero.getDodge()) {
                 System.out.println(hero.getName() + " dodged!");
             } else {
@@ -43,25 +43,6 @@ public class ParticipateBasedFightSystem implements FightSystem{
         System.out.println(Constant.DIVIDE);
         System.out.println("Fight finish!!");
         System.out.println(Constant.DIVIDE);
-
-        // after battle
-        if (hero.getStatus() == Constant.FAINT){
-            // hero faint in the fight
-            // the hero gets revived by the other hero(es) and gets back half
-            // of his/her hp but doesn’t gain any exp or money
-            hero.recoverFromFaint();
-        } else {
-            hero.getTheReward(monster.getLevel(), Constant.FIGHT_EXP);
-        }
-
-        System.out.println(Constant.DIVIDE);
-
-        System.out.println("Press c to exit this fight");
-        String ins = scanner.next();
-        while (!ins.equalsIgnoreCase("C")){
-            System.out.println("Invalid instruction");
-            scanner.next();
-        }
 
 
     }

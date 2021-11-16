@@ -5,6 +5,16 @@ public abstract class Character implements Hurtable, Buyable{
     protected int level;
     protected int HP;
     protected int status;
+    // Position
+    protected Position position = new Position();
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
 
     public String getName() {
         return name;

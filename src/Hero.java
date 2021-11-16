@@ -193,6 +193,12 @@ public class Hero extends Character implements Teleport {
         status = Constant.NORMAL;
     }
 
+    public void respawnFromFaint(){
+        System.out.println("Hero " + name + "  respawns in the Nexus of their lane");
+        HP = recordHP;
+        status = Constant.NORMAL;
+    }
+
     /**
      * hero not faint util fight finished
      * @param level
