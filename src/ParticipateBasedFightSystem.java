@@ -23,7 +23,7 @@ public class ParticipateBasedFightSystem implements FightSystem{
         // indicate which character to move
         System.out.println(Constant.DIVIDE);
         if (turnHero) {
-            System.out.println("Hero " + hero + " !");
+            System.out.println("Hero " + hero.getName() + " !");
             chooseAMove(hero, monster);
         } else {
             // monster action

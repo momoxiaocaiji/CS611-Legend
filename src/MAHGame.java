@@ -194,6 +194,9 @@ public class MAHGame extends RPGame {
                     "F/f: fight with the neighbor monster.\n" +
                     "T/t: teleport to somewhere you want.\n" +
                     "B/b: teleport back to Nexus.\n");
+            if (hero.getPosition().getxPos() == (size -1)) {
+                System.out.print("N/n: buy and sell items.\n");
+            }
             String moveIndex = scanner.next();
 
             if ("I".equalsIgnoreCase(moveIndex)) {
@@ -218,6 +221,12 @@ public class MAHGame extends RPGame {
                 if (playMap.triggerFight(hero)){
                     break;
                 }
+            }else if ("N".equalsIgnoreCase(moveIndex)) {
+                if (hero.getPosition().getxPos() != (size-1)) {
+                    System.out.println("Not a valid move instruction!!");
+                    continue;
+                }
+                new NexusTile().trigger(hero);
             } else if ("W".equalsIgnoreCase(moveIndex)
                     || "A".equalsIgnoreCase(moveIndex)
                     || "S".equalsIgnoreCase(moveIndex)
