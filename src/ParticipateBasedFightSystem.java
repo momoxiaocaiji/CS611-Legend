@@ -28,7 +28,7 @@ public class ParticipateBasedFightSystem implements FightSystem{
         } else {
             // monster action
             Random random = new Random();
-            System.out.println("Monster " + monster + " !");
+            System.out.println("Monster " + monster.getName() + " !");
             System.out.println(monster.getName() + " uses Formal Attack");
             if (random.nextDouble() * 100 <= hero.getDodge()) {
                 System.out.println(hero.getName() + " dodged!");

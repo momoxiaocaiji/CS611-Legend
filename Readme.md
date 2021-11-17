@@ -106,5 +106,3 @@ coding my project on Windows
 ---
 1. TP behind the moster
 2. buff in the tile
-3. At the start of every round, the heroes regain 10% of their hp and 10% of their mana.
-4. win condition

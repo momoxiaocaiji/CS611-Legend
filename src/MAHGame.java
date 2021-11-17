@@ -68,6 +68,8 @@ public class MAHGame extends RPGame {
 
         isNotEnd = true;
         // start game
+        boolean heroWin = false;
+        boolean monsterWin = false;
         while (isNotEnd) {
 
             // after 8 rounds, init 3 monster
@@ -79,23 +81,50 @@ public class MAHGame extends RPGame {
             // player's turn
             for (MAHGamePlayer p : players) {
                 for (Hero hero : p.getTeam()) {
+                    hero.recoverForTurn();
+                    hero.recordState();
                     currentHero = hero;
                     playMap.show(currentHero);
                     System.out.println(Constant.DIVIDE);
                     System.out.println("Hero " + hero.getName());
                     move(hero);
+                    if (!isNotEnd)
+                        break;
                     // finish move
+                    if (hero.getPosition().getxPos() == 0) {
+                        heroWin = true;
+                    }
                     currentHero = null;
                 }
             }
 
             // monster's turn
+            // clean the dead monster
+            monsters.removeIf(m -> m.getStatus() == Constant.DEAD);
+
             for (Monster monster : monsters) {
                 // looking for battle
                 monsterMove(monster);
+                if (monster.getPosition().getxPos() == size - 1 ) {
+                    monsterWin = true;
+                }
+            }
+
+            if (heroWin || monsterWin) {
+                break;
             }
 
             turnCount--;
+        }
+
+        if (heroWin) {
+            System.out.println(Constant.DIVIDE);
+            System.out.println("Heroes' team wins!!!!!!!");
+            System.out.println(Constant.DIVIDE);
+        } else if (monsterWin) {
+            System.out.println(Constant.DIVIDE);
+            System.out.println("Monsters' team wins!!!!!!!");
+            System.out.println(Constant.DIVIDE);
         }
     }
 
@@ -120,8 +149,6 @@ public class MAHGame extends RPGame {
     }
 
     private void initMonster(int levelLimit) {
-        // clean the dead monster
-        monsters.removeIf(m -> m.getStatus() == Constant.DEAD);
         // init add 3 monsters
         for (int i = 1; i <= Constant.INIT_HERO_NUM; i++) {
             Monster m = new RandomMonsterCreator().createMonster(levelLimit);

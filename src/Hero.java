@@ -195,8 +195,13 @@ public class Hero extends Character implements Teleport {
 
     public void respawnFromFaint(){
         System.out.println("Hero " + name + "  respawns in the Nexus of their lane");
-        HP = recordHP;
+        HP = this.level * Constant.HP_FACTOR;;
         status = Constant.NORMAL;
+    }
+
+    public void recoverForTurn(){
+        HP = recordHP / Constant.REGAIN_HP_FACTOR + HP;
+        MP = recordMP / Constant.REGAIN_MP_FACTOR + MP;
     }
 
     /**
@@ -205,8 +210,6 @@ public class Hero extends Character implements Teleport {
      * @param exp
      */
     public void getTheReward(int level, int exp){
-        HP = recordHP / Constant.REGAIN_HP_FACTOR + HP;
-        MP = recordMP / Constant.REGAIN_MP_FACTOR + MP;
         System.out.println("Hero " + name + " get " + Constant.GAIN_MONEY_FACTOR * level + " money");
         money = money + Constant.GAIN_MONEY_FACTOR * level;
         System.out.println("Hero " + name + " get 2 exp");

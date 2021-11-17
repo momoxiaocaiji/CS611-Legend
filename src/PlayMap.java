@@ -218,7 +218,11 @@ public class PlayMap {
 
     public boolean monsterMove(Monster monster) {
         Position monsterPosition = monster.getPosition();
-        Hero h = (Hero) haveOpposite(monster);
+        List<Hero> heroList = (List<Hero>) haveOpposite(monster);
+        Hero h = null;
+        if (heroList.size() != 0) {
+            h = heroList.get(0);
+        }
         if (h == null) {
             // move forward
             if (playGround[monsterPosition.getxPos() + 1][monsterPosition.getyPos()].getMonster() != null) {
@@ -257,7 +261,11 @@ public class PlayMap {
     }
 
     public boolean triggerFight(Hero hero) {
-        Monster monster = (Monster) haveOpposite(hero);
+        Monster monster = null;
+        List<Monster> monsterList = (List<Monster>) haveOpposite(hero);
+        if (monsterList.size() != 0) {
+            monster =  chooseMonster(monsterList);
+        }
         if (monster == null) {
             System.out.println(Constant.DIVIDE);
             System.out.println("you cannot fight with any monster!");
@@ -292,7 +300,7 @@ public class PlayMap {
     }
 
     // trigger the fight
-    private Character haveOpposite(Character c) {
+    private List<? extends Character> haveOpposite(Character c) {
         if (c instanceof Hero) {
             List<Monster> monsterList = new ArrayList<>();
             for (int i = c.getPosition().getxPos(); i >= c.getPosition().getxPos() - 1; i--) {
@@ -304,21 +312,20 @@ public class PlayMap {
                     monsterList.add(playGround[i][next].getMonster());
                 }
             }
-            if (monsterList.size() != 0) {
-                return chooseMonster(monsterList);
-            }
+            return monsterList;
         } else {
+            List<Hero> heroList = new ArrayList<>();
             for (int i = c.getPosition().getxPos(); i <= c.getPosition().getxPos() + 1; i++) {
                 if (playGround[i][c.getPosition().getyPos()].getHero() != null) {
-                    return playGround[i][c.getPosition().getyPos()].getHero();
+                    heroList.add(playGround[i][c.getPosition().getyPos()].getHero());
                 }
                 int next = c.getPosition().getyPos() % 3 == 0 ? c.getPosition().getyPos() + 1 : c.position.getyPos() - 1;
                 if (playGround[i][next].getHero() != null) {
-                    return playGround[i][next].getHero();
+                    heroList.add(playGround[i][next].getHero());
                 }
             }
+            return heroList;
         }
-        return null;
     }
 
     private Monster chooseMonster(List<Monster> monsterList) {
