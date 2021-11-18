@@ -24,6 +24,10 @@ public class Hero extends Character implements Teleport {
     protected int recordHP;
     protected int recordMP;
 
+    protected double extraDexterity;
+    protected double extraAgility;
+    protected double extraStrength;
+
 
     // skill
     protected Map<String, Integer> skills;
@@ -37,6 +41,30 @@ public class Hero extends Character implements Teleport {
     protected List<Spell> learnedSpell;
 
     protected boolean chosen = false;
+
+    public void setExtraDexterity(double extraDexterity) {
+        this.extraDexterity = extraDexterity;
+    }
+
+    public void setExtraAgility(double extraAgility) {
+        this.extraAgility = extraAgility;
+    }
+
+    public void setExtraStrength(double extraStrength) {
+        this.extraStrength = extraStrength;
+    }
+
+    public double getExtraDexterity() {
+        return extraDexterity;
+    }
+
+    public double getExtraAgility() {
+        return extraAgility;
+    }
+
+    public double getExtraStrength() {
+        return extraStrength;
+    }
 
     public boolean isChosen() {
         return chosen;

@@ -98,6 +98,8 @@ public class PlayMap {
                         playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
                 playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                 hero.tp(heroPosition, length - 1, heroPosition.getyPos());
+                attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+
                 return true;
             case "t":
             case "T":
@@ -141,6 +143,8 @@ public class PlayMap {
                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                     hero.tp(heroPosition, row, column);
+                    attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+
                     return true;
                 }
             case "w":
@@ -163,6 +167,8 @@ public class PlayMap {
                     heroPosition.setxPos(heroPosition.getxPos() - 1);
                     //encounterEvent(player);
 
+                    attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+
 
                     return true;
                 }
@@ -179,6 +185,8 @@ public class PlayMap {
                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                     heroPosition.setyPos(heroPosition.getyPos() - 1);
                     //encounterEvent(player);
+                    attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+
                     return true;
                 }
             case "d":
@@ -194,6 +202,8 @@ public class PlayMap {
                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                     heroPosition.setyPos(heroPosition.getyPos() + 1);
                     //encounterEvent(player);
+                    attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+
                     return true;
                 }
             case "s":
@@ -209,10 +219,32 @@ public class PlayMap {
                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                     heroPosition.setxPos(heroPosition.getxPos() + 1);
                     //encounterEvent(player);
+                    attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+
                     return true;
                 }
             default:
                 return true;
+        }
+    }
+
+    private void attrBuff(Hero hero, Position heroPosition) {
+        if(playGround[heroPosition.getxPos()][heroPosition.getyPos()] instanceof BushTile){
+            hero.setExtraStrength(0);
+            hero.setExtraAgility(0);
+            hero.setExtraDexterity(hero.skills.get("dexterity")*0.1);
+        }else if(playGround[heroPosition.getxPos()][heroPosition.getyPos()] instanceof CaveTile){
+            hero.setExtraDexterity(0);
+            hero.setExtraStrength(0);
+            hero.setExtraDexterity(hero.skills.get("agility")*0.1);
+        }else if(playGround[heroPosition.getxPos()][heroPosition.getyPos()] instanceof KoulouTile){
+            hero.setExtraDexterity(0);
+            hero.setExtraAgility(0);
+            hero.setExtraDexterity(hero.skills.get("strength")*0.1);
+        }else{
+            hero.setExtraDexterity(0);
+            hero.setExtraStrength(0);
+            hero.setExtraAgility(0);
         }
     }
 
