@@ -365,10 +365,10 @@ public class Hero extends Character implements Teleport {
      * recalculate damage, defence, dodge when equipment or skill changes
      */
     public void recalDamageAndDef(){
-        damage = (int)Math.ceil(skills.get("strength") * Constant.DAMAGE_FACTOR);
+        damage = (int)Math.ceil((skills.get("strength")+this.extraStrength) * Constant.DAMAGE_FACTOR);
         weaponDamage = (int) Math.ceil(equipment.sumDamage() * Constant.DAMAGE_FACTOR);
         armorDef = equipment.sumDef();
-        dodge = skills.get("agility") * Constant.DODGE_FACTOR;
+        dodge = (skills.get("agility")+this.extraAgility) * Constant.DODGE_FACTOR;
     }
 
     /**

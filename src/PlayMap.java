@@ -233,14 +233,17 @@ public class PlayMap {
             hero.setExtraStrength(0);
             hero.setExtraAgility(0);
             hero.setExtraDexterity(hero.skills.get("dexterity")*0.1);
+            System.out.println("Your dexterity has increased: "+hero.getExtraDexterity());
         }else if(playGround[heroPosition.getxPos()][heroPosition.getyPos()] instanceof CaveTile){
             hero.setExtraDexterity(0);
             hero.setExtraStrength(0);
-            hero.setExtraDexterity(hero.skills.get("agility")*0.1);
+            hero.setExtraAgility(hero.skills.get("agility")*0.1);
+            System.out.println("Your agility has increased:" + hero.getExtraAgility());
         }else if(playGround[heroPosition.getxPos()][heroPosition.getyPos()] instanceof KoulouTile){
             hero.setExtraDexterity(0);
             hero.setExtraAgility(0);
-            hero.setExtraDexterity(hero.skills.get("strength")*0.1);
+            hero.setExtraStrength(hero.skills.get("strength")*0.1);
+            System.out.println("Your strength has increased:" + hero.getExtraStrength());
         }else{
             hero.setExtraDexterity(0);
             hero.setExtraStrength(0);

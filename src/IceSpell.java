@@ -34,7 +34,7 @@ public class IceSpell extends Spell{
     public boolean cast(Hero caster, Monster opposite){
         boolean sup = super.cast(caster, opposite);
         if(sup){
-            int spellFinalDamage = damage + damage * caster.getSkills().get("dexterity") / Constant.SPELL_DAMAGE_FACTOR;
+            int spellFinalDamage = (int) (damage + damage * (caster.getSkills().get("dexterity")+caster.getExtraDexterity()) / Constant.SPELL_DAMAGE_FACTOR);
             System.out.println(opposite.getName() + " took " + Constant.BLUE +spellFinalDamage + Constant.RESET + " damage");
             opposite.getHurt(spellFinalDamage);
             opposite.setDefence((int) (opposite.getDefence() * Constant.DETERIORATION_FACTOR));
