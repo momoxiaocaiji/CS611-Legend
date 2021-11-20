@@ -85,7 +85,7 @@ public class PlayMap {
         return new Position(0, (laneIndex - 1) * 3 + random);
     }
 
-    public boolean validMove(String direction, Hero hero) {
+    public boolean validMove(String direction, Hero hero,List<Monster> monsters) {
         Position heroPosition = hero.getPosition();
         switch (direction) {
             case "b":
@@ -106,12 +106,22 @@ public class PlayMap {
                 int input;
                 int row;
                 int column;
-                System.out.println("Where would you like to tp?");
+                Monster currentMonster = null;
+                for(Monster monster:monsters){
+                    if(monster.getPosition().getyPos()+1==hero.getPosition().getyPos()||
+                            monster.getPosition().getyPos()-1==hero.getPosition().getyPos()||
+                            monster.getPosition().getyPos()==hero.getPosition().getyPos()){
+                        currentMonster = monster;
+                        break;
+                    }
+                }
 
+                System.out.println("Where would you like to tp?");
                 System.out.println("input row:");
                 input = scanner.nextInt();
+
                 while (true) {
-                    if (input >= 1 && input <= this.length && input <= width - hero.getExploredTile()) {
+                    if (input >= 1 && input <= this.length && input <= width-hero.getExploredTile()+1) {
                         // player will see the inverse index of row
                         row = width - input;
                         break;
@@ -131,6 +141,12 @@ public class PlayMap {
                         System.out.println("input column, the area is not able to arrive:");
                         input = scanner.nextInt();
                     }
+                }
+
+                if(currentMonster.getPosition().getxPos()>row){
+                    System.out.println(currentMonster.getPosition());
+                    System.out.println("You can not tp behind a monster!");
+                    return false;
                 }
 
                 if (playGround[row][column] instanceof InaccessibleTile) {

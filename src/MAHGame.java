@@ -261,7 +261,7 @@ public class MAHGame extends RPGame {
                     || "T".equalsIgnoreCase(moveIndex)
                     || "B".equalsIgnoreCase(moveIndex)) {
                 // make a valid move
-                if (!playMap.validMove(moveIndex, hero)) {
+                if (!playMap.validMove(moveIndex, hero,monsters)) {
                     System.out.println("Can't move to this tile");
                     continue;
                 }
