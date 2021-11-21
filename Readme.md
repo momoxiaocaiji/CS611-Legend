@@ -114,3 +114,7 @@ coding my project on Windows
    to get the compiled class files
 3. Back to the previous directory, and run
    java -cp src Main
+4. If you run the code on the Linux/Mac machine, the Color part will be OK. But If you run the code in the PowerShell, 
+   you need to change the registry of your computer. The registry key at HKEY_CURRENT_USER\Console\VirtualTerminalLevel sets 
+   the global default behavior for processing ANSI escape sequences. Create a DWORD key (if necessary) and set its value to 1 
+   to globally enable (or 0 to disable`) ANSI processing by default. Then reopen the PowerShell.
