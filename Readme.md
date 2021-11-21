@@ -42,29 +42,29 @@ coding my project on Windows
 18. KoulouTile - the Koulou tile in the map, which will trigger the buff after stepping in.
 19. Learnable - the interface indicates a spell can be learned
 20. LightningSpell - class as the lightning_spell object
-21. MAHGame - the main class to create a MAHGame and start it.
-22. MAHGamePlayer - the player of the MAHGame
-23. Main - the class for running
-24. MainMarket - the only market of the game, every NexusTile will visit this market
-25. MainScanner - the only scanner of the game, every input will invoke this scanner
-26. Market - the interface Market for extension
-27. Monster - class as the Monster object
-28. MonsterCreator - interface of the Creator of Factory Pattern .
-29. NexusTile - the market tile in the map, which will trigger the market
-30. Paladin - class as the Paladin object
-31. Parser - class to parse the information in the config file
-32. ParticipateBasedFightSystem - the fight system for one turn fight, which is suitable for valor.
-33. PlainTile - the plain tile in the map
-34. PlayMap - the game map of the MAH game
-35. Position - record the position of the player, rewrite equals method for comparing the position easily.
-36. Potion - class as the Potion object.
-37. RandomMonsterCreator - the Creator of Factory Pattern , to create a monster from different type of monster randomly.
-38. RPGame - the abstract class for extension, in case of another RPGame.
-39. Saleable - interface that indicates an item can be sold.
-40. Sorcerer - class as the Sorcerer object
-41. Spell - class as the Spell object, which has subclass like FireSpell
-42. Teleport - interface which indicates the character can teleport.
-43. Usable - interface which indicates the item can be used
+21. MAHGamePlayer - the player of the MAHGame
+22. Main - the class for running
+23. MainMarket - the only market of the game, every NexusTile will visit this market
+24. MainScanner - the only scanner of the game, every input will invoke this scanner
+25. Market - the interface Market for extension
+26. Monster - class as the Monster object
+27. MonsterCreator - interface of the Creator of Factory Pattern .
+28. NexusTile - the market tile in the map, which will trigger the market
+29. Paladin - class as the Paladin object
+30. Parser - class to parse the information in the config file
+31. ParticipateBasedFightSystem - the fight system for one turn fight, which is suitable for valor.
+32. PlainTile - the plain tile in the map
+33. PlayMap - the game map of the MAH game
+34. Position - record the position of the player, rewrite equals method for comparing the position easily.
+35. Potion - class as the Potion object.
+36. RandomMonsterCreator - the Creator of Factory Pattern , to create a monster from different type of monster randomly.
+37. RPGame - the abstract class for extension, in case of another RPGame.
+38. Saleable - interface that indicates an item can be sold.
+39. Sorcerer - class as the Sorcerer object
+40. Spell - class as the Spell object, which has subclass like FireSpell
+41. Teleport - interface which indicates the character can teleport.
+42. Usable - interface which indicates the item can be used
+43. ValorGame - the main class to create a MAHGame and start it.
 44. ValorTile - the adaptor class for the sub-tile class to have the hero and monster as their member invariant.
 45. Tile - the interface of the tile
 46. TileCreator - interface of the Creator of Factory Pattern .

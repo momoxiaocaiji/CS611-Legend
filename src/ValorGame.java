@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class MAHGame extends RPGame {
+public class ValorGame extends RPGame {
     private List<MAHGamePlayer> players;
     private List<Monster> monsters;
     private final int size;
@@ -14,7 +14,7 @@ public class MAHGame extends RPGame {
     private static Monster currentMonster;
     private static int turnCount = 8;
 
-    public MAHGame() {
+    public ValorGame() {
         size = 8;
         scanner = MainScanner.getSingleInstance().getScanner();
         players = new ArrayList<>();
