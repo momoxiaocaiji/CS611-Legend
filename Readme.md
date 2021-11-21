@@ -113,4 +113,4 @@ coding my project on Windows
    javac *.java
    to get the compiled class files
 3. Back to the previous directory, and run
-   java -cp src Main.java
+   java -cp src Main
