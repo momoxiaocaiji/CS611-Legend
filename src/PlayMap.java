@@ -98,7 +98,7 @@ public class PlayMap {
                         playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
                 playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                 hero.tp(heroPosition, length - 1, heroPosition.getyPos());
-                attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+                encounterEvent(hero);//set the extra attr when a hero reach the buff area
 
                 return true;
             case "t":
@@ -159,7 +159,7 @@ public class PlayMap {
                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                     hero.tp(heroPosition, row, column);
-                    attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+                    encounterEvent(hero);//set the extra attr when a hero reach the buff area
 
                     return true;
                 }
@@ -181,9 +181,7 @@ public class PlayMap {
                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                     heroPosition.setxPos(heroPosition.getxPos() - 1);
-                    //encounterEvent(player);
-
-                    attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+                    encounterEvent(hero);//set the extra attr when a hero reach the buff area
 
 
                     return true;
@@ -200,8 +198,7 @@ public class PlayMap {
                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                     heroPosition.setyPos(heroPosition.getyPos() - 1);
-                    //encounterEvent(player);
-                    attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+                    encounterEvent(hero);//set the extra attr when a hero reach the buff area
 
                     return true;
                 }
@@ -217,8 +214,7 @@ public class PlayMap {
                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                     heroPosition.setyPos(heroPosition.getyPos() + 1);
-                    //encounterEvent(player);
-                    attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+                    encounterEvent(hero);//set the extra attr when a hero reach the buff area
 
                     return true;
                 }
@@ -234,8 +230,8 @@ public class PlayMap {
                             playGround[heroPosition.getxPos()][heroPosition.getyPos()].getHero());
                     playGround[heroPosition.getxPos()][heroPosition.getyPos()].setHero(null);
                     heroPosition.setxPos(heroPosition.getxPos() + 1);
-                    //encounterEvent(player);
-                    attrBuff(hero, heroPosition);//set the extra attr when a hero reach the buff area
+                    encounterEvent(hero);//set the extra attr when a hero reach the buff area
+
 
                     return true;
                 }
@@ -244,28 +240,6 @@ public class PlayMap {
         }
     }
 
-    private void attrBuff(Hero hero, Position heroPosition) {
-        if(playGround[heroPosition.getxPos()][heroPosition.getyPos()] instanceof BushTile){
-            hero.setExtraStrength(0);
-            hero.setExtraAgility(0);
-            hero.setExtraDexterity(hero.skills.get("dexterity")*0.1);
-            System.out.println("Your dexterity has increased: "+hero.getExtraDexterity());
-        }else if(playGround[heroPosition.getxPos()][heroPosition.getyPos()] instanceof CaveTile){
-            hero.setExtraDexterity(0);
-            hero.setExtraStrength(0);
-            hero.setExtraAgility(hero.skills.get("agility")*0.1);
-            System.out.println("Your agility has increased:" + hero.getExtraAgility());
-        }else if(playGround[heroPosition.getxPos()][heroPosition.getyPos()] instanceof KoulouTile){
-            hero.setExtraDexterity(0);
-            hero.setExtraAgility(0);
-            hero.setExtraStrength(hero.skills.get("strength")*0.1);
-            System.out.println("Your strength has increased:" + hero.getExtraStrength());
-        }else{
-            hero.setExtraDexterity(0);
-            hero.setExtraStrength(0);
-            hero.setExtraAgility(0);
-        }
-    }
 
     public boolean monsterMove(Monster monster) {
         Position monsterPosition = monster.getPosition();
@@ -346,8 +320,8 @@ public class PlayMap {
         }
     }
 
-    private void encounterEvent(MAHGamePlayer player) {
-        playGround[playersPosition.get(player).getxPos()][playersPosition.get(player).getyPos()].trigger(player);
+    private void encounterEvent(Hero player) {
+        playGround[player.getPosition().getxPos()][player.getPosition().getyPos()].trigger(player);
     }
 
     // trigger the fight

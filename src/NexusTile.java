@@ -11,6 +11,11 @@ public class NexusTile extends ValorTile implements Tile{
 
     @Override
     public boolean trigger(Hero hero) {
+        //init the extra attributes
+        hero.setExtraDexterity(0);
+        hero.setExtraStrength(0);
+        hero.setExtraAgility(0);
+
         // enter the Market
         System.out.println("Welcome! Hero " + hero.getName());
         market.setGuest(hero);

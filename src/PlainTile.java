@@ -6,7 +6,11 @@ public class PlainTile extends ValorTile implements Tile{
 
     @Override
     public boolean trigger(Hero hero){
-        Random random = new Random();
+        //init the extra attributes
+        hero.setExtraDexterity(0);
+        hero.setExtraStrength(0);
+        hero.setExtraAgility(0);
+       /* Random random = new Random();
         // means the hero will meet a fight with 70%
         if(random.nextInt(10) < 3) {
             System.out.println("Oh! Nothing happened!");
@@ -17,7 +21,7 @@ public class PlainTile extends ValorTile implements Tile{
             System.out.println("start a fight");
             System.out.println("----------------------------------");
             fightSystem.startAFight();
-        }
+        }*/
         return true;
     }
 
