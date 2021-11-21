@@ -78,11 +78,11 @@ coding my project on Windows
 1. Files to be parsed should be stored in ConfigFiles, for parser class to read class
 2. might bonus
    1. the color output in the terminal
-      1. the player's position in this map will be red
-      2. the damage and defence of hero will be displayed in two part. The damage and defence of their own and that of the
+      1. the currentPlayer who is going to move in this map will be yellow and the rest of them will be blue.
+      2. the monster in this map will be red
+      3. the damage and defence of hero will be displayed in two part. The damage and defence of their own and that of the
       equipments in the parentheses.
-      3. the damage from formal attack will be white. red for fire_spell, blue for ice_spell, yellow for lighting_spell
-      4. the inaccessibleTile is black background
+      4. the damage from formal attack will be white. red for fire_spell, blue for ice_spell, yellow for lighting_spell
    2. some extension
       1. this game can play with multiple players
       2. you can and more skills to the hero
@@ -95,17 +95,14 @@ coding my project on Windows
       created.
       3. I use Iterator Pattern for choosing who should move during the fight. The class CirculateList is designed for this 
       idea. You put your team in the CirculateList and it will give the next Character to move circularly.
-      4. hero can choose the monster he'd like to fight
+      4. I use Adaptor Pattern for making the subclass of tile to adapt the Part I Tile interface and can have new member invariance.
+      The class ValorTile is designed for this idea.
 3. Things instructions to note
    1. defence can only decrease (20% * defence) damage
    2. every hero will get a Sword and a Platinum_Shield in their equipment as the init equipment
    3. spell cannot avoid and defence.
-   4. the monster will attack the hero moved last (maybe they hate the hero who caused the damage)
+   4. the monster will randomly choose the hero within their attach range to fight.
    5. you can equip the armor on the body, and two single-handy weapons for two hands
-   6. NexusTile has the letter 'M' in the Tile
-   7. When the player check the inventory or enter the market, the hero will do the action one by one.
-   8. You will enter the market automatically when you step in the Market Tile, and you can't enter it again if you exit 
-   the market.
 
 ## How to run
 
